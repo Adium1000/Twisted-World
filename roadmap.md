@@ -4,8 +4,15 @@
 - Make the settings menu
 - Make at least 5 Levels
 - Add Mobile support
+.
 
+.
 
+.
+
+.
+
+.
 # Devlog 1 : Building the Game Lobby
 
 ## Designing the UI
@@ -31,8 +38,12 @@ They're small details, but they make the lobby feel much less static
 Instead of downloading a button sound from the internet, I decided to make one myself
 I literally recorded a sound with my headset microphone by making a clicking noise with my mouth, after recording it, I edited and processed the audio until it sounded like a proper UI button click. Surprisingly, it turned out pretty well!
 
+![SOUND](.github/Devlogging/Audio.png)
+
 ## Background Parallax
 
 Finally, I added a parallax effect to the background, for this part, I used Claude to help implement the effect
 At the moment, the lobby is still fairly simple, but it's now stable enough to serve as a solid foundation for the rest of the game's development
 Looking forward to adding actual functionality in the next updates!
+
+![devlog1](.github/Devlogging/devlog1.png)

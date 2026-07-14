@@ -1,3 +1,11 @@
+//  ___          __    __          
+// |   |  .-----|  |--|  |--.--.--.
+// |.  |  |  _  |  _  |  _  |  |  |
+// |.  |__|_____|_____|_____|___  |
+// |:  1   |                |_____|
+// |::.. . |                       
+// `-------'                       
+                                 
 const playButton = document.getElementById("playButton");
 const settingsButton = document.getElementById("settingsButton");
 const popSound = new Audio("Assets/Sounds/pop.wav");
@@ -29,7 +37,7 @@ function handleButtonClick(btn) {
 }
 playButton.addEventListener("click", () => {
     handleButtonClick(playButton);
-    console.log("Play");
+    setTimeout(() => Game.start(1), 350); // let the click bounce play out first
 });
 settingsButton.addEventListener("click", () => {
     handleButtonClick(settingsButton);

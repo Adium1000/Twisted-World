@@ -1,0 +1,19 @@
+/*
+ * Levels.js
+ * ---------
+ * Grid-based level definitions for the rotating-world platformer.
+ *
+ * Grid legend:
+ *   '#'  solid platform / wall tile
+ *   '.'  empty space
+ *   'S'  spawn point (exactly one per level)
+ *   'F'  finish point (exactly one per level)
+ *
+ * All rows must be the same length (a rectangle). The play area is
+ * always rendered as a square, sized by (columns * cellSize) and
+ * (rows * cellSize), so keep the grid square (equal rows/cols) for
+ * the cleanest presentation.
+ *
+ * To add a new level, just add another entry to LEVELS below and
+ * call Game.start(<id>) (the lobby's Play button starts level 1).
+ */

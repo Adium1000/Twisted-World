@@ -8,18 +8,49 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <div class="parallax" id="parallax">
-        <div class="layer" id="layerBack"><div class="layer-inner scroll-slow"></div></div> 
-        <div class="layer" id="layerMid"><div class="layer-inner scroll-mid"></div></div>    
-        <div class="layer" id="layerFront"><div class="layer-inner scroll-fast"></div></div> 
+        <div class="layer" id="layerBack"><div class="layer-inner scroll-slow"></div></div>
+        <div class="layer" id="layerMid"><div class="layer-inner scroll-mid"></div></div>
+        <div class="layer" id="layerFront"><div class="layer-inner scroll-fast"></div></div>
     </div>
-    <div class="menu">
-        <img src="Assets/Lobby/Logo.png" class="logo" alt="Twisted World">
-        <div class="spacing"></div>
-        <img src="Assets/Lobby/Button1.png" class="button" id="playButton" alt="Play">      
-        <img src="Assets/Lobby/Button2.png" class="button" id="settingsButton" alt="Settings"> 
+
+    <!-- ===================== LOBBY SCREEN ===================== -->
+    <div class="screen active" id="lobbyScreen">
+        <div class="menu">
+            <img src="Assets/Lobby/Logo.png" class="logo" alt="Twisted World">
+            <div class="spacing"></div>
+            <img src="Assets/Lobby/Button1.png" class="button" id="playButton" alt="Play">
+            <img src="Assets/Lobby/Button2.png" class="button" id="settingsButton" alt="Settings">
+        </div>
     </div>
-    <script src="Lobby.js"></script> 
+
+    <!-- ===================== GAME SCREEN ===================== -->
+    <div class="screen" id="gameScreen">
+        <div class="game-wrap">
+            <canvas id="gameCanvas"></canvas>
+
+            <div class="game-ui">
+                <div class="level-title" id="levelTitle">
+                    <img class="level-word" src="Assets/LevelCounter/level.png" alt="Level">
+                    <div class="level-digits" id="levelDigits"></div>
+                </div>
+                <button class="icon-button" id="backToLobby" title="Back to lobby">&#8592;</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="win-banner" id="winBanner">
+        <div class="win-card">
+            <div class="win-title">Level Complete!</div>
+            <button class="game-button" id="lobbyButton">Lobby</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <script src="Levels.js"></script>
+    <script src="Game.js"></script>
+    <script src="Lobby.js"></script>
 
 </body>
 </html>
