@@ -195,11 +195,87 @@ body{
 }
 
 
-.button:nth-of-type(2){
+/* ===================== LEVEL SELECT (LOBBY) ===================== */
+.play-row{
+    display:flex;
+    flex-wrap:nowrap;
+    align-items:center;
+    justify-content:center;
+}
+
+.level-select{
+    height:130px;
+    max-width:0;
+    opacity:0;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    flex-shrink:0;
+    pointer-events:none;
+    transition:
+        max-width .45s ease,
+        opacity .3s ease,
+        margin .45s ease;
+}
+.level-select.open{
+    max-width:580px;
+    opacity:1;
+    margin-left:22px;
+    pointer-events:auto;
+}
+
+.level-select-row{
+    display:flex;
+    flex-wrap:nowrap;
+    justify-content:center;
+    align-items:center;
+    gap:4px;
+    padding:28px 16px;
+}
+
+.level-select-item{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:none;
+    border:none;
+    padding:12px;
+    cursor:pointer;
+    transition:transform .15s ease, filter .18s ease;
+}
+.level-select-item:hover{
+    transform:scale(1.15) translateY(-2px);
+}
+.level-select-item.pressed{
+    animation:buttonClick .35s ease;
+}
+
+.level-digit-select{
+    height:70px;
+    width:auto;
+    display:block;
+    user-select:none;
+    pointer-events:none;
+    filter:drop-shadow(0 0 10px rgba(120,170,255,.45));
+    transition:filter .18s ease, opacity .18s ease;
+}
+
+.level-select-item.locked{
+    cursor:not-allowed;
+}
+.level-select-item.locked:hover{
+    transform:none;
+}
+.level-select-item.locked .level-digit-select{
+    filter:brightness(.32) grayscale(.7);
+    opacity:.6;
+}
+
+.intro-1{
     animation:buttonIntro .6s ease .3s forwards;
 }
 
-.button:nth-of-type(3){
+.intro-2{
     animation:buttonIntro .6s ease .45s forwards;
 }
 

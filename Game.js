@@ -5,14 +5,11 @@
 // |:  1   |                     
 // |::.. . |                     
 // `-------'                     
-                               
-
 const Game = (() => {
     const CANVAS_W = 960;              
     const CANVAS_H = 720;
     const ROTATION_DURATION = 550;     
     const GRAVITY_SCALE = 0.001;      
-
     const COLORS = {
         platformFill: "#3B4B65",
         platformOutline: "#eaf2ff",
@@ -23,7 +20,6 @@ const Game = (() => {
         laserOutline: "#eaf2ff",
         laserGlow: "rgba(59,75,101,0.7)",
     };
-
     const DIR_VECTORS = {
         up: { x: 0, y: -1 },
         down: { x: 0, y: 1 },
@@ -34,19 +30,18 @@ const Game = (() => {
     let engine, world;
     let ballBody;
     let level, cellSize, cols, rows;
+    let currentLevelId = null;
     let offsetX, offsetY;             
     let rotationCenter;              
     let terrainPath;               
     let finishCenter;           
     let spawnCenter;                  
     let shadowSpeedSmooth = 0;    
-
     let lasers = [];                   
     let projectiles = [];              
     let viewAngle = 0;                 
     let isRotating = false;
     let rotFrom = 0, rotTo = 0, rotStart = 0;
-
     let gameActive = false;
     let levelWon = false;
     let lastTime = 0;
@@ -58,7 +53,6 @@ const Game = (() => {
         if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length) return false;
         return grid[r][c] === "#";
     }
-
     function findMarker(grid, ch) {
         for (let r = 0; r < grid.length; r++) {
             const c = grid[r].indexOf(ch);
@@ -67,7 +61,6 @@ const Game = (() => {
         return null;
     }
     const CORNER_RADIUS = 10;
-
     function buildTerrainPaths(grid, size) {
         const rows = grid.length, cols = grid[0].length;
         const segments = [];
@@ -76,7 +69,7 @@ const Game = (() => {
             for (let c = 0; c <= cols; c++) {
                 const above = isSolid(grid, r - 1, c);
                 const below = isSolid(grid, r, c);
-                const isEdge = above !== below; // boundary between solid/empty
+                const isEdge = above !== below; 
                 if (isEdge && runStart === null) runStart = c;
                 if ((!isEdge || c === cols) && runStart !== null) {
                     segments.push({ a: { x: runStart * size, y: r * size }, b: { x: c * size, y: r * size } });
@@ -110,7 +103,6 @@ const Game = (() => {
         const visited = new Set();
         const segId = (seg) => segments.indexOf(seg);
         const loops = [];
-
         segments.forEach((startSeg) => {
             if (visited.has(segId(startSeg))) return;
             const loop = [startSeg.a];
@@ -118,11 +110,10 @@ const Game = (() => {
             let currentSeg = startSeg;
             visited.add(segId(currentSeg));
             loop.push(currentPoint);
-
             while (key(currentPoint) !== key(startSeg.a)) {
                 const candidates = adjacency.get(key(currentPoint)) || [];
                 const nextSeg = candidates.find((s) => !visited.has(segId(s)));
-                if (!nextSeg) break; // safety guard, shouldn't happen on a clean grid
+                if (!nextSeg) break;
                 visited.add(segId(nextSeg));
                 currentPoint = other(nextSeg, currentPoint);
                 currentSeg = nextSeg;
@@ -130,7 +121,6 @@ const Game = (() => {
             }
             loops.push(loop);
         });
-
         const path = new Path2D();
         loops.forEach((loop) => {
             const pts = loop.slice(0, -1);
@@ -139,7 +129,6 @@ const Game = (() => {
             const last = pts[n - 1];
             const first = pts[0];
             path.moveTo((last.x + first.x) / 2, (last.y + first.y) / 2);
-
             for (let i = 0; i < n; i++) {
                 const curr = pts[i];
                 const next = pts[(i + 1) % n];
@@ -151,7 +140,6 @@ const Game = (() => {
             }
             path.closePath();
         });
-
         return path;
     }
     function buildPhysicsBodies(grid, size) {
@@ -182,19 +170,16 @@ const Game = (() => {
         }
         return bodies;
     }
-
     function buildLevel(levelId) {
+        currentLevelId = levelId;
         level = getLevel(levelId);
         cellSize = level.cellSize;
         rows = level.grid.length;
         cols = level.grid[0].length;
-
         offsetX = (CANVAS_W - cols * cellSize) / 2;
         offsetY = (CANVAS_H - rows * cellSize) / 2;
         rotationCenter = { x: (cols * cellSize) / 2, y: (rows * cellSize) / 2 };
-
         terrainPath = buildTerrainPaths(level.grid, cellSize);
-
         const spawn = findMarker(level.grid, "S");
         const finish = findMarker(level.grid, "F");
         finishCenter = {
@@ -205,7 +190,6 @@ const Game = (() => {
             x: spawn.c * cellSize + cellSize / 2,
             y: spawn.r * cellSize + cellSize / 2,
         };
-
         lasers = (level.lasers || []).map((turret) => ({
             ...turret,
             x: turret.col * cellSize + cellSize / 2,
@@ -218,7 +202,6 @@ const Game = (() => {
         engine.world.gravity.x = 0;
         engine.world.gravity.y = 1;
         engine.world.gravity.scale = GRAVITY_SCALE;
-
         const platforms = buildPhysicsBodies(level.grid, cellSize);
         const ballRadius = cellSize * 0.36;
         ballBody = Matter.Bodies.circle(
@@ -233,9 +216,7 @@ const Game = (() => {
                 label: "ball",
             }
         );
-
         Matter.World.add(world, [...platforms, ballBody]);
-
         viewAngle = 0;
         isRotating = false;
         levelWon = false;
@@ -258,21 +239,20 @@ const Game = (() => {
     function easeInOutCubic(t) {
         return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
     }
-
-    function triggerRotation() {
+    function triggerRotation(direction = 1) {
         if (!gameActive || isRotating || levelWon) return;
         isRotating = true;
         rotFrom = viewAngle;
-        rotTo = rotFrom + Math.PI / 2;
+        rotTo = rotFrom + (Math.PI / 2) * direction;
         rotStart = performance.now();
     }
-
     function updateRotation(now) {
         if (!isRotating) return;
         const t = Math.min(1, (now - rotStart) / ROTATION_DURATION);
         viewAngle = rotFrom + (rotTo - rotFrom) * easeInOutCubic(t);
         if (t >= 1) {
-            viewAngle = rotTo % (Math.PI * 2);
+            const TWO_PI = Math.PI * 2;
+            viewAngle = ((rotTo % TWO_PI) + TWO_PI) % TWO_PI;
             isRotating = false;
         }
     }
@@ -287,6 +267,7 @@ const Game = (() => {
         const dy = ballBody.position.y - finishCenter.y;
         if (Math.hypot(dx, dy) < cellSize * 0.45) {
             levelWon = true;
+            Progress.unlock(currentLevelId + 1);
             document.querySelector(".game-wrap").classList.add("level-won");
             document.getElementById("winBanner").classList.add("show");
         }
@@ -295,6 +276,9 @@ const Game = (() => {
         Matter.Body.setPosition(ballBody, spawnCenter);
         Matter.Body.setVelocity(ballBody, { x: 0, y: 0 });
         Matter.Body.setAngularVelocity(ballBody, 0);
+        viewAngle = 0;
+        isRotating = false;
+        shadowSpeedSmooth = 0;
     }
     function spawnProjectile(turret) {
         const dirVec = DIR_VECTORS[turret.dir] || DIR_VECTORS.down;
@@ -315,21 +299,18 @@ const Game = (() => {
                 turret.nextFire = now + (turret.interval || 1500);
             }
         });
-
         const dt = frameDelta / 1000;
         const projectileR = cellSize * 0.14;
         for (let i = projectiles.length - 1; i >= 0; i--) {
             const p = projectiles[i];
             p.x += p.vx * dt;
             p.y += p.vy * dt;
-
             const gc = Math.floor(p.x / cellSize);
             const gr = Math.floor(p.y / cellSize);
             if (gr < 0 || gr >= rows || gc < 0 || gc >= cols || isSolid(level.grid, gr, gc)) {
                 projectiles.splice(i, 1);
                 continue;
             }
-
             const dx = p.x - ballBody.position.x;
             const dy = p.y - ballBody.position.y;
             if (Math.hypot(dx, dy) < projectileR + ballBody.circleRadius) {
@@ -338,14 +319,11 @@ const Game = (() => {
             }
         }
     }
-
     function renderLasers() {
         lasers.forEach((turret) => {
             const bodyR = cellSize * 0.28;
-
             ctx.save();
             ctx.translate(turret.x, turret.y);
-
             ctx.save();
             ctx.shadowColor = COLORS.laserGlow;
             ctx.shadowBlur = 14;
@@ -354,7 +332,6 @@ const Game = (() => {
             ctx.fillStyle = COLORS.laser;
             ctx.fill();
             ctx.restore();
-
             ctx.lineWidth = 3;
             ctx.strokeStyle = COLORS.laserOutline;
             ctx.beginPath();
@@ -379,12 +356,12 @@ const Game = (() => {
     }
     function render() {
         ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
-        ctx.fillStyle = "rgba(0,0,0,0.1)";
-        ctx.fillRect(offsetX, offsetY, cols * cellSize, rows * cellSize);
         ctx.save();
         ctx.translate(offsetX + rotationCenter.x, offsetY + rotationCenter.y);
         ctx.rotate(viewAngle);
         ctx.translate(-rotationCenter.x, -rotationCenter.y);
+        ctx.fillStyle = "rgba(0,0,0,0.1)";
+        ctx.fillRect(0, 0, cols * cellSize, rows * cellSize);
         ctx.save();
         ctx.shadowColor = "rgba(0,0,0,0.55)";
         ctx.shadowBlur = 22;
@@ -393,7 +370,6 @@ const Game = (() => {
         ctx.fillStyle = COLORS.platformFill;
         ctx.fill(terrainPath, "evenodd");
         ctx.restore();
-
         ctx.strokeStyle = COLORS.platformOutline;
         ctx.lineWidth = 5;
         ctx.lineJoin = "round";
@@ -401,7 +377,6 @@ const Game = (() => {
         renderLasers();
         const finishR = cellSize * 0.32;
         const spinAngle = (performance.now() / 900) % (Math.PI * 2);
-
         ctx.save();
         ctx.shadowColor = "rgba(59,75,101,0.65)";
         ctx.shadowBlur = 20;
@@ -413,7 +388,6 @@ const Game = (() => {
         ctx.lineWidth = 2;
         ctx.stroke();
         ctx.restore();
-
         ctx.save();
         ctx.translate(finishCenter.x, finishCenter.y);
         ctx.rotate(spinAngle);
@@ -431,14 +405,12 @@ const Game = (() => {
         const fallSpeed = Math.max(0, ballBody.velocity.x * gdx + ballBody.velocity.y * gdy);
         const targetT = Math.min(1, fallSpeed / 6);
         shadowSpeedSmooth += (targetT - shadowSpeedSmooth) * 0.15;
-
         const shadowOffset = rBall * (0.25 + shadowSpeedSmooth * 0.9);
         const shadowR = rBall * (1.25 - shadowSpeedSmooth * 0.35);
         const shadowAlpha = 0.42 - shadowSpeedSmooth * 0.22;
         const shadowX = ballBody.position.x + gdx * shadowOffset;
         const shadowY = ballBody.position.y + gdy * shadowOffset;
         const fallAngle = Math.atan2(gdy, gdx);
-
         ctx.save();
         ctx.translate(shadowX, shadowY);
         ctx.rotate(fallAngle);
@@ -463,19 +435,15 @@ const Game = (() => {
         ctx.strokeStyle = COLORS.ballOutline;
         ctx.stroke();
         ctx.restore();
-
         ctx.restore();
     }
-
     function loop(now) {
         if (!gameActive) return;
         const frameDelta = Math.min(200, lastTime ? now - lastTime : FIXED_DT);
         lastTime = now;
         accumulator += frameDelta;
-
         updateRotation(now);
         updateGravity();
-
         if (!levelWon) {
             updateLasers(now, frameDelta);
             let substeps = 0;
@@ -488,18 +456,43 @@ const Game = (() => {
         } else {
             accumulator = 0;
         }
-
         render();
         rafId = requestAnimationFrame(loop);
     }
-    function onKeyDown() {
-        triggerRotation();
+    const HOLD_THRESHOLD = 380; 
+    let holdTimer = null;
+    let holdTriggered = false;
+    function beginPress() {
+        if (holdTimer !== null) return; 
+        holdTriggered = false;
+        holdTimer = setTimeout(() => {
+            holdTriggered = true;
+            holdTimer = null;
+            triggerRotation(-1); 
+        }, HOLD_THRESHOLD);
+    }
+    function endPress() {
+        if (holdTimer !== null) {
+            clearTimeout(holdTimer);
+            holdTimer = null;
+            if (!holdTriggered) triggerRotation(1); 
+        }
+        holdTriggered = false;
+    }
+    function onKeyDown(e) {
+        if (e.repeat) return;
+        beginPress();
+    }
+    function onKeyUp() {
+        endPress();
     }
     function onPointerDown(e) {
         if (e.target.closest(".icon-button, .game-button")) return;
-        triggerRotation();
+        beginPress();
     }
-
+    function onPointerUp() {
+        endPress();
+    }
     function resizeCanvas() {
         canvas.width = CANVAS_W;
         canvas.height = CANVAS_H;
@@ -508,29 +501,36 @@ const Game = (() => {
         canvas = document.getElementById("gameCanvas");
         ctx = canvas.getContext("2d");
         resizeCanvas();
-
         document.getElementById("lobbyScreen").classList.remove("active");
         document.getElementById("gameScreen").classList.add("active");
-
         buildLevel(levelId);
-
         gameActive = true;
         lastTime = 0;
         accumulator = 0;
         window.addEventListener("keydown", onKeyDown);
+        window.addEventListener("keyup", onKeyUp);
         document.querySelector(".game-wrap").addEventListener("pointerdown", onPointerDown);
+        window.addEventListener("pointerup", onPointerUp);
+        window.addEventListener("pointercancel", onPointerUp);
         rafId = requestAnimationFrame(loop);
     }
-
     function stop() {
         gameActive = false;
         if (rafId) cancelAnimationFrame(rafId);
+        if (holdTimer !== null) {
+            clearTimeout(holdTimer);
+            holdTimer = null;
+        }
+        holdTriggered = false;
         window.removeEventListener("keydown", onKeyDown);
+        window.removeEventListener("keyup", onKeyUp);
         const wrap = document.querySelector(".game-wrap");
         if (wrap) wrap.removeEventListener("pointerdown", onPointerDown);
-
+        window.removeEventListener("pointerup", onPointerUp);
+        window.removeEventListener("pointercancel", onPointerUp);
         document.getElementById("gameScreen").classList.remove("active");
         document.getElementById("lobbyScreen").classList.add("active");
+        if (typeof window.refreshLevelSelect === "function") window.refreshLevelSelect();
     }
     function closeWinBannerThen(callback) {
         const wrap = document.querySelector(".game-wrap");
@@ -538,15 +538,12 @@ const Game = (() => {
         if (wrap) wrap.classList.remove("level-won");
         setTimeout(callback, 480);
     }
-
     function restart(levelId) {
         buildLevel(levelId);
     }
-
     document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("backToLobby").addEventListener("click", stop);
         document.getElementById("lobbyButton").addEventListener("click", () => closeWinBannerThen(stop));
     });
-
     return { start, stop, restart };
 })();

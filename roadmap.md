@@ -1,18 +1,7 @@
-@ Tasks
+This file also explains where I used AI in this project
 
-- Add TOS an PP
-- Make the settings menu
-- Make at least 5 Levels
-- Add Mobile support
-.
+(Snipet paste) : Check the `roadmap.md` in the repo's root `/` for AI ussage explained
 
-.
-
-.
-
-.
-
-.
 # Devlog 1 : Building the Game Lobby
 
 ## Designing the UI
@@ -47,3 +36,63 @@ At the moment, the lobby is still fairly simple, but it's now stable enough to s
 Looking forward to adding actual functionality in the next updates!
 
 ![devlog1](.github/Devlogging/devlog1.png)
+
+# Devlog 2: Level Engine + First Playable Level
+The first playable level is now available, along with the core engine that powers the game
+Here's a quick overview of what has been added:
+
+## Level Physics Engine
+With the help of Claude and a lot of manual work, I built a stable and reusable level engine that behaves consistently and is easy to expandThe ball now lands naturally, rolls correctly across surfaces, and the overall movement feels much smoother than beforeThis engine will serve as the foundation for all future levels
+
+## Level Creation System
+All levels are stored inside Levels.js, making it easy to create new content by editing the game's source code
+
+# Level Structure
+Each level is defined as a simple grid
+Grid symbols
+
+'#' Solid platform or wall
+'.' Empty space
+'S' Player spawn point
+'F' Finish point
+
+Rules
+Every row must have the same number of columns
+Each level should be square for the best visual results
+Every level must contain exactly one S and one F
+Creating a New Level
+
+- Creating a new level only requires a few steps
+
+1. Open Levels.js
+2. Add a new entry to the LEVELS array
+3. Design the level using the grid symbols above
+4. Start the level using Game.start(<id>)
+
+- The Play button in the lobby currently launches Level 1
+
+# Entering a Level
+At the moment there is only one playable level
+Press the Play button in the lobby to start the first test level
+
+# Gameplay
+The current build includes a simple test level designed to demonstrate the core mechanics, Just press any key to rotate the world
+
+![Devlog2](.github/Devlogging/Devlog2.png)
+
+
+# Devlog 3: Polish
+2
+**New Features**
+
+- I added 5 levels to the game. Each level of the game is different from the others in terms of layout and design. The game now saves your progress through the levels to the memory. This means you will not lose your progress when you close the game.
+
+- I changed the way you select levels in the game. When you press the play button it moves to the side. Shows you the available levels. It is not a menu for choosing levels but it looks nice and works well.
+
+- I also added a thing to the game where if you hold down the key button the whole level will flip upside down. This means we can make puzzles that use gravity and rotation.
+
+**Fixes**
+
+- I fixed a problem where the level would stay down after the character died. Now the level will go back, to normal when you restart.
+
+- I fixed another problem where the background would not move with the level when it was flipped. Now the background and the level move together which makes the game look better.
