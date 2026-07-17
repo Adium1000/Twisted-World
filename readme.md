@@ -10,8 +10,9 @@ This is the most detailed guide for my game (For sure you can skip this)
 
 In this game you objective is to guide the Ball in the Finnish Portal
 
-REFERANCE BALL:
-REFERANCE PORTAL:
+REFERANCE BALL: ![ball](.github/ball.png)
+
+REFERANCE PORTAL: ![portal](.github/portal.png)
 
 ---
 

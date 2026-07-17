@@ -566,3 +566,39 @@ body{
     transform:translateY(-2px) scale(1.04);
     box-shadow:0 8px 22px rgba(45,110,237,.45);
 }
+
+/* ===================== PRIVACY POLICY POPUP (text only) ===================== */
+/* Cardul, fundalul, blur-ul și animația vin gratis din .win-banner / .win-card / */
+/* .win-title / .game-button (aceleași clase ca la "Level Complete!").            */
+/* Aici stilizăm DOAR paragraful și link-ul, adăugate special pentru acest popup. */
+.privacy-content{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    max-width:380px;
+}
+
+.privacy-text{
+    color:#c9d6ea;
+    font-size:15px;
+    line-height:1.55;
+    text-align:center;
+    max-width:380px;
+}
+
+.privacy-source{
+    margin-top:-6px;
+    font-size:14px;
+}
+
+.privacy-link{
+    color:#7fb0ff;
+    font-weight:700;
+    text-decoration:underline;
+    text-underline-offset:3px;
+    transition:color .18s ease;
+}
+.privacy-link:hover{
+    color:#a8c8ff;
+}
