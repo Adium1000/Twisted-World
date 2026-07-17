@@ -9,6 +9,24 @@
 const playButton = document.getElementById("playButton");
 const settingsButton = document.getElementById("settingsButton");
 const popSound = new Audio("Assets/Sounds/pop.wav");
+const SFX_KEY = "twistedWorld_sfxVolume";
+const SFX_MAX = 5;
+const Sfx = {
+    get() {
+        const stored = parseInt(localStorage.getItem(SFX_KEY), 10);
+        if (Number.isFinite(stored) && stored >= 0 && stored <= SFX_MAX) return stored;
+        return SFX_MAX;
+    },
+    set(value) {
+        const clamped = Math.max(0, Math.min(SFX_MAX, value));
+        localStorage.setItem(SFX_KEY, String(clamped));
+        return clamped;
+    },
+    apply(audioEl) {
+        audioEl.volume = this.get() / SFX_MAX;
+    },
+};
+window.Sfx = Sfx;
 [playButton, settingsButton].forEach((btn) => {
     btn.addEventListener("animationend", (e) => {
         if (e.animationName === "buttonIntro") {
@@ -19,8 +37,9 @@ const popSound = new Audio("Assets/Sounds/pop.wav");
 });
 function playPop() {
     const sound = popSound.cloneNode();
-    sound.currentTime = 0; 
-    sound.play().catch(() => {}); 
+    sound.currentTime = 0;
+    Sfx.apply(sound);
+    sound.play().catch(() => {});
 }
 function triggerBounce(el, className, animationName) {
     el.classList.remove(className);
@@ -70,18 +89,64 @@ playButton.addEventListener("click", () => {
     handleButtonClick(playButton);
     setTimeout(() => {
         const opening = !levelSelectPanel.classList.contains("open");
+        settingsSelectPanel.classList.remove("open");
         if (opening) renderLevelSelect(); 
         levelSelectPanel.classList.toggle("open", opening);
     }, 350); 
 });
 document.addEventListener("pointerdown", (e) => {
-    if (!levelSelectPanel.classList.contains("open")) return;
-    if (levelSelectPanel.contains(e.target) || playButton.contains(e.target)) return;
-    levelSelectPanel.classList.remove("open");
+    if (levelSelectPanel.classList.contains("open") &&
+        !levelSelectPanel.contains(e.target) && !playButton.contains(e.target)) {
+        levelSelectPanel.classList.remove("open");
+    }
+    if (settingsSelectPanel.classList.contains("open") &&
+        !settingsSelectPanel.contains(e.target) && !settingsButton.contains(e.target)) {
+        settingsSelectPanel.classList.remove("open");
+    }
 });
+
+//  _______ _______ _______ _____   _______ _______ _______ 
+// |     __|    ___|     __|     |_|     __|    ___|_     _|
+// |__     |    ___|__     |       |__     |    ___| |   |  
+// |_______|_______|_______|_______|_______|_______| |___|  
+const settingsSelectPanel = document.getElementById("settingsSelect");
+const settingsSelectRow = document.getElementById("settingsSelectRow");
+function renderSettingsSelect() {
+    settingsSelectRow.innerHTML = "";
+
+    const icon = document.createElement("img");
+    icon.src = "Assets/Lobby/sfx.png";
+    icon.alt = "SFX Volume";
+    icon.className = "sfx-icon";
+    settingsSelectRow.appendChild(icon);
+
+    const item = document.createElement("button");
+    item.type = "button";
+    item.className = "level-select-item";
+    item.setAttribute("aria-label", "SFX Volume");
+    const digit = document.createElement("img");
+    digit.src = `Assets/LevelCounter/${Sfx.get()}.png`;
+    digit.alt = String(Sfx.get());
+    digit.className = "level-digit-select";
+    item.appendChild(digit);
+    item.addEventListener("click", () => {
+        const next = Sfx.get() >= SFX_MAX ? 0 : Sfx.get() + 1;
+        Sfx.set(next);
+        digit.src = `Assets/LevelCounter/${next}.png`;
+        digit.alt = String(next);
+        playPop();
+        triggerBounce(item, "pressed", "buttonClick");
+    });
+    settingsSelectRow.appendChild(item);
+}
 settingsButton.addEventListener("click", () => {
     handleButtonClick(settingsButton);
-    console.log("Settings");
+    setTimeout(() => {
+        const opening = !settingsSelectPanel.classList.contains("open");
+        levelSelectPanel.classList.remove("open");
+        if (opening) renderSettingsSelect();
+        settingsSelectPanel.classList.toggle("open", opening);
+    }, 350);
 });
 const layerConfigs = [
     { id: "layerBack",  count: 8,  sizeRange: [30, 55]  }, 
@@ -139,4 +204,3 @@ layerConfigs.forEach(({ id, count, sizeRange }) => {
     inner.appendChild(half);          
     inner.appendChild(half.cloneNode(true)); 
 });
-

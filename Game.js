@@ -49,6 +49,21 @@ const Game = (() => {
     let rafId = null;
     const FIXED_DT = 1000 / 60;
     const MAX_SUBSTEPS = 5;
+    const ballSound = new Audio("Assets/Sounds/ball.wav");
+    let lastBallSoundTime = 0;
+    const BALL_SOUND_COOLDOWN = 250;  
+    const BALL_SOUND_MIN_SPEED = 0.6; 
+    function playBallSound() {
+        const now = performance.now();
+        if (now - lastBallSoundTime < BALL_SOUND_COOLDOWN) return;
+        lastBallSoundTime = now;
+        const sound = ballSound.cloneNode();
+        sound.currentTime = 0;
+        if (window.Sfx && typeof window.Sfx.apply === "function") {
+            window.Sfx.apply(sound);
+        }
+        sound.play().catch(() => {});
+    }
     function isSolid(grid, r, c) {
         if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length) return false;
         return grid[r][c] === "#";
@@ -217,6 +232,17 @@ const Game = (() => {
             }
         );
         Matter.World.add(world, [...platforms, ballBody]);
+        Matter.Events.on(engine, "collisionStart", (event) => {
+            event.pairs.forEach((pair) => {
+                const { bodyA, bodyB } = pair;
+                const hitPlatform =
+                    (bodyA === ballBody && bodyB.label === "platform") ||
+                    (bodyB === ballBody && bodyA.label === "platform");
+                if (hitPlatform && ballBody.speed > BALL_SOUND_MIN_SPEED) {
+                    playBallSound();
+                }
+            });
+        });
         viewAngle = 0;
         isRotating = false;
         levelWon = false;

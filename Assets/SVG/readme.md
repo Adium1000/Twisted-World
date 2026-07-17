@@ -1,1 +1,0 @@
-This files will never be used in the game, this is kinda a cache folder so yea

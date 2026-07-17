@@ -260,6 +260,27 @@ body{
     transition:filter .18s ease, opacity .18s ease;
 }
 
+.settings-select{
+    height:auto;
+    align-items:center;
+}
+.settings-select .level-select-row{
+    align-items:center;
+}
+.settings-select.open{
+    overflow:visible;
+}
+
+.sfx-icon{
+    height:105px;
+    width:auto;
+    display:block;
+    user-select:none;
+    pointer-events:none;
+    filter:drop-shadow(0 0 10px rgba(120,170,255,.45));
+    flex-shrink:0;
+}
+
 .level-select-item.locked{
     cursor:not-allowed;
 }

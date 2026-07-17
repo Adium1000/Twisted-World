@@ -4,6 +4,35 @@ Twisted World is a one-key puzzle platformer where gravity is your only tool. Ro
 `Not compatible with Phones or small screens`
 
 # How to Play
+This is the most detailed guide for my game (For sure you can skip this)
+
+### Welcome to Twisted World! 
+
+In this game you objective is to guide the Ball in the Finnish Portal
+
+REFERANCE BALL:
+REFERANCE PORTAL:
+
+---
+
+1. Lobby
+
+To play any level first click on the play button, then the level picker will show, from here you can choose the levels
+
+img
+
+! The grayed levels are locked because you need to pass the biggest number of non-grayed level first
+
+2. Settings
+3. In Game gameplay
+Here is the fun part, the ball itself can't move, instead you move the platformer by pressing any key
+
+Short Press - Rotate to right 
+Long Press - Rotate to left
+
+
+
+
 
 
 

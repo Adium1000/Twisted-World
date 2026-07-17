@@ -96,3 +96,13 @@ The current build includes a simple test level designed to demonstrate the core 
 - I fixed a problem where the level would stay down after the character died. Now the level will go back, to normal when you restart.
 
 - I fixed another problem where the background would not move with the level when it was flipped. Now the background and the level move together which makes the game look better.
+
+
+![devlog3](.github/Devlogging/Devlog3.png)
+
+# Devlog 4: ~~Settings~~ Setting
+
+This update introduces the first version of the **Settings** menu. It's pretty minimal for now, but it's the foundation for future options
+The first available setting is **SFX Volume**, which can be adjusted from **0 to 5**. Whether you want the full experience or complete silence, you're now in control of the game's sound effects I've also added a new sound effect. From now on, whenever the ball lands on the upper level, it plays a satisfying landing sound, making the gameplay feel more responsive and polished
+
+![Devlog4](.github/Devlogging/Devlog4.png)
