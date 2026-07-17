@@ -1,10 +1,3 @@
-<!-- ___          __             
-    |   .-----.--|  .-----.--.--.
-    |.  |     |  _  |  -__|_   _|
-    |.  |__|__|_____|_____|__.__|
-    |:  |                        
-    |::.|                        
-    `---'    --> 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,11 +8,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <div class="parallax" id="parallax">
         <div class="layer" id="layerBack"><div class="layer-inner scroll-slow"></div></div>
         <div class="layer" id="layerMid"><div class="layer-inner scroll-mid"></div></div>
         <div class="layer" id="layerFront"><div class="layer-inner scroll-fast"></div></div>
     </div>
+
+    <!-- ===================== LOBBY SCREEN ===================== -->
     <div class="screen active" id="lobbyScreen">
         <div class="menu">
             <img src="Assets/Lobby/Logo.png" class="logo" alt="Twisted World">
@@ -38,6 +34,8 @@
             </div>
         </div>
     </div>
+
+    <!-- ===================== GAME SCREEN ===================== -->
     <div class="screen" id="gameScreen">
         <div class="game-wrap">
             <canvas id="gameCanvas"></canvas>
@@ -51,21 +49,39 @@
             </div>
         </div>
     </div>
+
     <div class="win-banner" id="winBanner">
         <div class="win-card">
             <div class="win-title">Level Complete!</div>
             <button class="game-button" id="lobbyButton">Lobby</button>
         </div>
     </div>
+
+    <!-- ===================== PRIVACY POLICY POPUP ===================== -->
+    <!-- Se afișează o singură dată, la prima pornire a jocului în acest   -->
+    <!-- browser (vezi Lobby.js pentru logica de "doar prima dată").      -->
+    <!-- Folosim INTENȚIONAT aceleași clase ca la popup-ul "Level         -->
+    <!-- Complete!" (.win-banner / .win-card / .win-title / .game-button) -->
+    <!-- ca designul (fundal, blur, animația cardului, culori, font) să   -->
+    <!-- fie identic, fără să mai scriem CSS separat pentru el.           -->
+    <!-- Conținutul din interior NU mai e scris static aici: Lobby.js dă  -->
+    <!-- fetch la PrivacyPolicy.md direct din repo (raw.githubusercontent -->
+    <!-- .com) și îl injectează în #privacyContent la runtime. Tot ce e   -->
+    <!-- vizibil (titlu, conținut, buton) e în engleză.                   -->
     <div class="win-banner" id="privacyBanner">
         <div class="win-card">
             <div class="win-title">Privacy Policy</div>
+            <!-- Container gol, umplut dinamic din Lobby.js cu textul     -->
+            <!-- luat direct din PrivacyPolicy.md (fetch la runtime).     -->
             <div class="privacy-content" id="privacyContent">
                 <p class="privacy-text">Loading Privacy Policy…</p>
             </div>
+            <!-- Trebuie apăsat OK ca popup-ul să dispară; nu se poate    -->
+            <!-- închide dând click în afara lui (vezi Lobby.js).        -->
             <button class="game-button" id="privacyOkButton">OK</button>
         </div>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
     <script src="Levels.js"></script>
     <script src="Game.js"></script>
