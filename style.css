@@ -1,16 +1,21 @@
+/* _______ __         __       
+  |   _   |  |_.--.--|  .-----.
+  |   1___|   _|  |  |  |  -__|
+  |____   |____|___  |__|_____|
+  |:  1   |    |_____|         
+  |::.. . |                    
+  `-------'                    
+*/                              
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
-
 body{
     width:100vw;
     height:100vh;
     position:relative;
-
     overflow:hidden;
-
     font-family:Arial, Helvetica, sans-serif;
     background:linear-gradient(
         -45deg,
@@ -22,8 +27,6 @@ body{
     background-size:400% 400%;
     background-position:35% 50%;
 }
-
-/* ===================== SCREEN SYSTEM ===================== */
 .screen{
     position:absolute;
     inset:0;
@@ -35,7 +38,6 @@ body{
 .screen.active{
     display:flex;
 }
-
 .menu{
     display:flex;
     flex-direction:column;
@@ -43,7 +45,6 @@ body{
     position:relative;
     z-index:2;
 }
-
 .parallax{
     position:fixed;
     inset:0;
@@ -51,13 +52,11 @@ body{
     pointer-events:none;
     z-index:1;
 }
-
 .layer{
     position:absolute;
     inset:0;
     will-change:transform;
 }
-
 .layer-inner{
     position:absolute;
     left:0;
@@ -69,11 +68,9 @@ body{
 .scroll-slow{
     animation:scrollLoop 55s linear infinite;
 }
-
 .scroll-mid{
     animation:scrollLoop 32s linear infinite;
 }
-
 .scroll-fast{
     animation:scrollLoop 18s linear infinite;
 }
@@ -85,7 +82,6 @@ body{
         transform:translateY(-50%);
     }
 }
-
 .shape{
     position:absolute;
     will-change:transform;
@@ -96,28 +92,23 @@ body{
 #layerBack .shape{
     opacity:.18;
 }
-
 #layerMid .shape{
     opacity:.3;
 }
-
 #layerFront .shape{
     opacity:.45;
 }
-
 .circle{
     border-radius:50%;
     background:radial-gradient(circle at 30% 30%, hsla(var(--hue, 210), 90%, 85%, .55), hsla(var(--hue, 210), 90%, 60%, .05));
     box-shadow:0 0 30px hsla(var(--hue, 210), 90%, 70%, .18);
 }
-
 .square{
     background:linear-gradient(135deg, hsla(var(--hue, 210), 90%, 85%, .4), hsla(var(--hue, 210), 90%, 60%, .05));
     box-shadow:0 0 25px hsla(var(--hue, 210), 90%, 70%, .15);
     border-radius:8px;
     animation-name:shapeDrift;
 }
-
 .triangle{
     width:0 !important;
     height:0 !important;
@@ -139,7 +130,6 @@ body{
         transform:translate(0, 0) rotate(var(--rot, 0deg));
     }
 }
-
 @keyframes shapeDriftPlain{
     0%{
         transform:translate(0, 0);
@@ -159,50 +149,35 @@ body{
         animation:none;
     }
 }
-
 .logo{
     width:min(900px, 88vw);
-
     margin-bottom:70px;
-
     user-select:none;
     pointer-events:none;
-
     animation:
         logoIntro .8s ease forwards,
         logoFloat 4s ease-in-out infinite .8s;
 }
-
 .button{
-
     width:min(480px, 60vw);
     height:100px;
     object-fit:contain;
-
     display:block;
-
     margin:18px 0;
-
     cursor:pointer;
     user-select:none;
     opacity:0;
     transform:translateY(30px);
-
     transition:
         transform .25s ease,
         filter .25s ease;
-
 }
-
-
-/* ===================== LEVEL SELECT (LOBBY) ===================== */
 .play-row{
     display:flex;
     flex-wrap:nowrap;
     align-items:center;
     justify-content:center;
 }
-
 .level-select{
     height:130px;
     max-width:0;
@@ -223,7 +198,6 @@ body{
     margin-left:22px;
     pointer-events:auto;
 }
-
 .level-select-row{
     display:flex;
     flex-wrap:nowrap;
@@ -232,7 +206,6 @@ body{
     gap:4px;
     padding:28px 16px;
 }
-
 .level-select-item{
     display:flex;
     align-items:center;
@@ -249,7 +222,6 @@ body{
 .level-select-item.pressed{
     animation:buttonClick .35s ease;
 }
-
 .level-digit-select{
     height:70px;
     width:auto;
@@ -259,7 +231,6 @@ body{
     filter:drop-shadow(0 0 10px rgba(120,170,255,.45));
     transition:filter .18s ease, opacity .18s ease;
 }
-
 .settings-select{
     height:auto;
     align-items:center;
@@ -270,7 +241,6 @@ body{
 .settings-select.open{
     overflow:visible;
 }
-
 .sfx-icon{
     height:105px;
     width:auto;
@@ -280,7 +250,6 @@ body{
     filter:drop-shadow(0 0 10px rgba(120,170,255,.45));
     flex-shrink:0;
 }
-
 .level-select-item.locked{
     cursor:not-allowed;
 }
@@ -291,108 +260,71 @@ body{
     filter:brightness(.32) grayscale(.7);
     opacity:.6;
 }
-
 .intro-1{
     animation:buttonIntro .6s ease .3s forwards;
 }
-
 .intro-2{
     animation:buttonIntro .6s ease .45s forwards;
 }
-
 .button:hover{
-
     transform:scale(1.08);
-
     filter:
         drop-shadow(0 0 25px rgba(255,255,255,.35));
-
 }
-
 .button.ready{
     opacity:1;
     transform:translateY(0);
     animation:none;
 }
-
 .button.ready.clicked{
     animation:buttonClick .35s ease;
 }
-
 @keyframes buttonClick{
-
     0%{
         transform:scale(1);
     }
-
     35%{
         transform:scale(.88);
     }
-
     65%{
         transform:scale(1.12);
     }
-
     100%{
         transform:scale(1);
     }
-
 }
-
 @keyframes logoIntro{
 
     from{
-
         opacity:0;
         transform:translateY(-40px);
-
     }
-
     to{
-
         opacity:1;
         transform:translateY(0);
-
     }
-
 }
-
 @keyframes logoFloat{
-
     0%{
         transform:translateY(0);
     }
-
     50%{
         transform:translateY(-10px);
     }
-
     100%{
         transform:translateY(0);
     }
-
 }
-
 @keyframes buttonIntro{
-
     from{
-
         opacity:0;
         transform:translateY(30px);
-
     }
-
     to{
-
         opacity:1;
         transform:translateY(0);
-
     }
-
 }
-
-/* ===================== GAME SCREEN ===================== */
-
 .game-wrap{
     position:relative;
     width:min(96vw, 128vh);
@@ -401,13 +333,11 @@ body{
     cursor:pointer;
     user-select:none;
 }
-
 #gameCanvas{
     display:block;
     width:100%;
     height:100%;
 }
-
 .game-ui{
     position:absolute;
     top:0;
@@ -420,7 +350,6 @@ body{
     pointer-events:none;
     z-index:5;
 }
-
 .level-title{
     display:flex;
     flex-direction:row;
@@ -429,7 +358,6 @@ body{
     gap:10px;
     filter:drop-shadow(0 2px 8px rgba(0,0,0,.6));
 }
-
 .level-word{
     height:clamp(38px, 6.2vw, 58px);
     width:auto;
@@ -438,7 +366,6 @@ body{
     user-select:none;
     pointer-events:none;
 }
-
 .level-digits{
     display:flex;
     flex-direction:row;
@@ -446,7 +373,6 @@ body{
     align-items:center;
     gap:3px;
 }
-
 .level-digit{
     height:clamp(43px, 6.7vw, 62px);
     width:auto;
@@ -455,28 +381,57 @@ body{
     user-select:none;
     pointer-events:none;
 }
-
-.icon-button{
-    pointer-events:auto;
+.back-icon-wrap{
     position:absolute;
     right:20px;
-    top:16px;
-    width:38px;
-    height:38px;
+    top:50%;
+    transform:translateY(-50%); 
+    pointer-events:auto;
+    width:clamp(38px, 6vw, 54px);
+    height:clamp(38px, 6vw, 54px);
     border-radius:50%;
-    border:2px solid rgba(255,255,255,.55);
-    background:rgba(10,18,32,.55);
-    color:#eaf2ff;
-    font-size:18px;
-    line-height:1;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:none;
+    border:none;
+    padding:0;
+    flex-shrink:0;
     cursor:pointer;
-    transition:transform .2s ease, background .2s ease;
+    transition:transform .2s ease, filter .2s ease;
 }
-.icon-button:hover{
-    transform:scale(1.08);
-    background:rgba(45,110,237,.5);
+.back-icon-wrap:hover{
+    transform:translateY(-50%) scale(1.1); 
+    filter:drop-shadow(0 0 12px rgba(120,170,255,.65));
 }
-
+.back-icon-wrap:active{
+    transform:translateY(-50%) scale(0.95);
+}
+.back-icon-wrap.clicked{
+    animation:backIconClick .35s ease;
+}
+@keyframes backIconClick{
+    0%{
+        transform:translateY(-50%) scale(1);
+    }
+    35%{
+        transform:translateY(-50%) scale(.88);
+    }
+    65%{
+        transform:translateY(-50%) scale(1.12);
+    }
+    100%{
+        transform:translateY(-50%) scale(1);
+    }
+}
+.back-icon-wrap img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    pointer-events:none;
+    -webkit-user-drag:none;
+}
 .win-banner{
     position:fixed;
     inset:0;
@@ -500,7 +455,6 @@ body{
     backdrop-filter:blur(6px);
     transition:opacity .35s ease, background .35s ease, backdrop-filter .35s ease;
 }
-
 .win-card{
     display:flex;
     flex-direction:column;
@@ -521,7 +475,6 @@ body{
 .win-banner.show .win-card{
     animation:winCardPop .55s cubic-bezier(.34, 1.56, .64, 1) forwards;
 }
-
 @keyframes winCardPop{
     0%{
         transform:scale(.3) translateY(40px);
@@ -539,7 +492,6 @@ body{
         opacity:1;
     }
 }
-
 .win-title{
     color:#eaf2ff;
     font-size:clamp(24px, 3.8vw, 34px);
@@ -548,7 +500,6 @@ body{
     text-shadow:0 0 30px rgba(90,150,255,.6);
     text-align:center;
 }
-
 .game-button{
     pointer-events:auto;
     padding:12px 28px;
@@ -566,11 +517,12 @@ body{
     transform:translateY(-2px) scale(1.04);
     box-shadow:0 8px 22px rgba(45,110,237,.45);
 }
-
-/* ===================== PRIVACY POLICY POPUP (text only) ===================== */
-/* Cardul, fundalul, blur-ul și animația vin gratis din .win-banner / .win-card / */
-/* .win-title / .game-button (aceleași clase ca la "Level Complete!").            */
-/* Aici stilizăm DOAR paragraful și link-ul, adăugate special pentru acest popup. */
+.confirm-actions{
+    display:flex;
+    flex-direction:row;
+    flex-wrap:nowrap;
+    gap:16px;
+}
 .privacy-content{
     display:flex;
     flex-direction:column;
@@ -578,7 +530,6 @@ body{
     gap:10px;
     max-width:380px;
 }
-
 .privacy-text{
     color:#c9d6ea;
     font-size:15px;
@@ -586,12 +537,10 @@ body{
     text-align:center;
     max-width:380px;
 }
-
 .privacy-source{
     margin-top:-6px;
     font-size:14px;
 }
-
 .privacy-link{
     color:#7fb0ff;
     font-weight:700;

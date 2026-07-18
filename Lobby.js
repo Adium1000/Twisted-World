@@ -5,7 +5,6 @@
 // |:  1   |                |_____|
 // |::.. . |                       
 // `-------'                       
-
 const PRIVACY_KEY = "twistedWorld_privacyAccepted";
 const PRIVACY_MD_URL = "https://raw.githubusercontent.com/Adium1000/Twisted-World/main/PrivacyPolicy.md";
 const privacyBanner = document.getElementById("privacyBanner");

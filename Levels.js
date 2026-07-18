@@ -21,7 +21,7 @@ const LEVELS = {
         ],
         lasers: [
             { row: 3, col: 3, dir: "down", interval: 1400, speed: 240 },
-        ],
+        ]
     },
     2: {
         name: "Level 2",

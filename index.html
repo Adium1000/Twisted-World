@@ -1,8 +1,16 @@
+<!--  
+  ___          __             
+ |   .-----.--|  .-----.--.--.
+ |.  |     |  _  |  -__|_   _|
+ |.  |__|__|_____|_____|__.__|
+ |:  |                        
+ |::.|                        
+ `---'        -->   
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- responsive pe mobil -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>Twisted World</title>
 
     <link rel="stylesheet" href="style.css">
@@ -34,13 +42,14 @@
     <div class="screen" id="gameScreen">
         <div class="game-wrap">
             <canvas id="gameCanvas"></canvas>
-
             <div class="game-ui">
                 <div class="level-title" id="levelTitle">
                     <img class="level-word" src="Assets/LevelCounter/level.png" alt="Level">
                     <div class="level-digits" id="levelDigits"></div>
                 </div>
-                <button class="icon-button" id="backToLobby" title="Back to lobby">&#8592;</button>
+                <button type="button" class="back-icon-wrap" id="backToLobby" title="Back to lobby" aria-label="Back to lobby">
+                    <img src="Assets/Lobby/back.png" alt="">
+                </button>
             </div>
         </div>
     </div>
@@ -48,6 +57,15 @@
         <div class="win-card">
             <div class="win-title">Level Complete!</div>
             <button class="game-button" id="lobbyButton">Lobby</button>
+        </div>
+    </div>
+    <div class="win-banner" id="backConfirmBanner">
+        <div class="win-card">
+            <div class="win-title">Return to lobby?</div>
+            <div class="confirm-actions">
+                <button class="game-button" id="backConfirmYes">Yes, exit</button>
+                <button class="game-button" id="backConfirmNo">No, stay</button>
+            </div>
         </div>
     </div>
     <div class="win-banner" id="privacyBanner">
@@ -59,11 +77,9 @@
             <button class="game-button" id="privacyOkButton">OK</button>
         </div>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
     <script src="Levels.js"></script>
     <script src="Game.js"></script>
     <script src="Lobby.js"></script>
-
 </body>
 </html>

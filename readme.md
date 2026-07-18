@@ -3,7 +3,8 @@
 Twisted World is a one-key puzzle platformer where gravity is your only tool. Rotate the world, avoid obstacles, and guide the ball to the finish
 `Not compatible with Phones or small screens`
 
-# How to Play
+![How to play](.github/Devlogging/1.png)
+
 This is the most detailed guide for my game (For sure you can skip this)
 
 ### Welcome to Twisted World! 
@@ -25,21 +26,21 @@ img
 ! The grayed levels are locked because you need to pass the biggest number of non-grayed level first
 
 2. Settings
+
+More like setting :3
+From here you can change the sfx volume
+
 3. In Game gameplay
+
 Here is the fun part, the ball itself can't move, instead you move the platformer by pressing any key
 
 Short Press - Rotate to right 
 Long Press - Rotate to left
 
+---
 
 
-
-
-
-
-
-
-# Level Creator
+![LevelCreator](.github/Devlogging/2.png)
 
 To create your own levels:
 1. Clone this repo
@@ -74,9 +75,11 @@ All rows must be the same length (a rectangle). The play area is always rendered
 To add a new level, just add another entry to LEVELS below and call Game.start(<id>)
 
 
-# Privacy Policy
+![PrivacyPolicy](.github/Devlogging/3.png)
 
 Read `PrivacyPolicy.md` from the `/` 
 
+![Credits](.github/Devlogging/4.png)
 
-# Credits
+1. [patorjk](https://patorjk.com/software/taag/#p=display&f=Cricket)
+2. [flamingtext](https://www.flamingtext.com/)

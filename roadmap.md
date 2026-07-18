@@ -106,3 +106,23 @@ This update introduces the first version of the **Settings** menu. It's pretty m
 The first available setting is **SFX Volume**, which can be adjusted from **0 to 5**. Whether you want the full experience or complete silence, you're now in control of the game's sound effects I've also added a new sound effect. From now on, whenever the ball lands on the upper level, it plays a satisfying landing sound, making the gameplay feel more responsive and polished
 
 ![Devlog4](.github/Devlogging/Devlog4.png)
+
+Here is a more confident and professional version of your devlog:
+
+---
+
+# Devlog 5: Privacy Policy Implementation
+
+I’ve successfully integrated a privacy policy popup that greets first-time users. This ensures transparency regarding how the game utilizes local browser storage to manage and persist player progress.
+
+During development, I encountered a couple of technical hurdles: a UI layering issue where the popup was rendered behind existing buttons, and a deployment conflict on GitHub Pages. I leveraged Codex to help troubleshoot the display logic and resolved the build issues, resulting in a seamless, fully functional experience across all web platforms.
+
+![devlog5](.github/Devlogging/devlog5.png)
+
+# Devlog 6: Final Polish
+
+I focused on improving the README, expanding it into a detailed and comprehensive guide that clearly explains the project.
+
+For the game, I redesigned the Back button while the player is in a level. Instead of returning immediately, it now displays a confirmation popup, preventing accidental exits and improving the overall user experience.
+
+![Devlog 6](.github/Devlogging/Devlog6.png)

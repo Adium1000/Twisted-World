@@ -43,6 +43,7 @@ const Game = (() => {
     let isRotating = false;
     let rotFrom = 0, rotTo = 0, rotStart = 0;
     let gameActive = false;
+    let isPaused = false; 
     let levelWon = false;
     let lastTime = 0;
     let accumulator = 0;
@@ -489,6 +490,7 @@ const Game = (() => {
     let holdTimer = null;
     let holdTriggered = false;
     function beginPress() {
+        if (isPaused) return; 
         if (holdTimer !== null) return; 
         holdTriggered = false;
         holdTimer = setTimeout(() => {
@@ -531,6 +533,7 @@ const Game = (() => {
         document.getElementById("gameScreen").classList.add("active");
         buildLevel(levelId);
         gameActive = true;
+        isPaused = false;
         lastTime = 0;
         accumulator = 0;
         window.addEventListener("keydown", onKeyDown);
@@ -568,7 +571,47 @@ const Game = (() => {
         buildLevel(levelId);
     }
     document.addEventListener("DOMContentLoaded", () => {
-        document.getElementById("backToLobby").addEventListener("click", stop);
+        const backBtn = document.getElementById("backToLobby");
+        const backConfirmBanner = document.getElementById("backConfirmBanner");
+        const backConfirmYes = document.getElementById("backConfirmYes");
+        const backConfirmNo = document.getElementById("backConfirmNo");
+        function showBackConfirm() {
+            if (backConfirmBanner) backConfirmBanner.classList.add("show");
+        }
+        function hideBackConfirm() {
+            if (backConfirmBanner) backConfirmBanner.classList.remove("show");
+        }
+
+        backBtn.addEventListener("click", () => {
+            if (typeof playPop === "function") playPop();
+            if (typeof triggerBounce === "function") triggerBounce(backBtn, "clicked", "backIconClick");
+            setTimeout(() => {
+                isPaused = true;
+                if (rafId) {
+                    cancelAnimationFrame(rafId);
+                    rafId = null;
+                }
+                showBackConfirm();
+            }, 180);
+        });
+        if (backConfirmYes) {
+            backConfirmYes.addEventListener("click", () => {
+                if (typeof playPop === "function") playPop();
+                hideBackConfirm();
+                isPaused = false;
+                stop(); 
+            });
+        }
+        if (backConfirmNo) {
+            backConfirmNo.addEventListener("click", () => {
+                if (typeof playPop === "function") playPop();
+                hideBackConfirm();
+                isPaused = false;
+                if (gameActive && !rafId) {
+                    rafId = requestAnimationFrame(loop);
+                }
+            });
+        }
         document.getElementById("lobbyButton").addEventListener("click", () => closeWinBannerThen(stop));
     });
     return { start, stop, restart };
